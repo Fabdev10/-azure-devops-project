@@ -25,15 +25,16 @@ resource "azurerm_network_interface" "bastion_nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "bastion_vm" {
-  name                = "${local.prefix}-bastion-vm-${var.location}"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  size                = var.vm_size
-  admin_username      = var.admin_username
+  name                            = "${local.prefix}-bastion-vm-${var.location}"
+  location                        = var.location
+  resource_group_name             = var.resource_group_name
+  size                            = var.vm_size
+  admin_username                  = var.admin_username
+  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.bastion_nic.id,
   ]
-  tags                = local.common_tags
+  tags                            = local.common_tags
 
   admin_ssh_key {
     username   = var.admin_username
@@ -64,9 +65,7 @@ resource "azurerm_virtual_machine_extension" "bootstrap" {
   type                 = "CustomScript"
   type_handler_version = "2.1"
 
-  settings = <<SETTINGS
-    {
-        "commandToExecute": "apt-get update && apt-get install -y docker.io && systemctl enable docker && systemctl start docker && usermod -aG docker ${var.admin_username}"
-    }
-SETTINGS
+  settings = jsonencode({
+    commandToExecute = "bash -c '${templatefile("${path.module}/scripts/bootstrap.sh.tpl", { admin_username = var.admin_username })}'"
+  })
 }

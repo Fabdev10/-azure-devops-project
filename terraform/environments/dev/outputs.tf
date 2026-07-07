@@ -26,6 +26,10 @@ output "bastion_vm_id" {
   value = module.compute.vm_id
 }
 
-output "bastion_vm_principal_id" {
-  value = module.compute.vm_principal_id
+output "bastion_vm_private_ip" {
+  value = module.compute.vm_private_ip
+}
+
+output "managed_identity_principal_id" {
+  value = module.compute.managed_identity_principal_id
 }
