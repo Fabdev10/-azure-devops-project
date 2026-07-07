@@ -33,6 +33,11 @@ variable "allowed_ssh_ips" {
   description = "List of IP addresses allowed to connect via SSH"
 }
 
+variable "admin_ssh_public_key" {
+  type        = string
+  description = "Public SSH key for the admin user of the Bastion VM"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Common tags"

@@ -8,6 +8,9 @@ data_subnet_prefix    = "10.0.2.0/24"
 # Sostituisci con l'IP pubblico della tua macchina / del tuo team
 allowed_ssh_ips       = ["95.235.197.91/32"] 
 
+# Incolla qui il contenuto della tua chiave pubblica (es. cat ~/.ssh/id_rsa.pub)
+admin_ssh_public_key  = "ssh-rsa ..."
+
 tags = {
   Owner = "DevOpsTeam"
 }
