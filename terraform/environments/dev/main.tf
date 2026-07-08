@@ -11,3 +11,19 @@ module "networking" {
   
   tags = var.tags
 }
+
+module "compute" {
+  source = "../../modules/compute"
+
+  project               = var.project
+  environment           = var.environment
+  location              = var.location
+  resource_group_name   = module.networking.resource_group_name
+  subnet_id             = module.networking.compute_subnet_id
+  public_ip_id          = module.networking.bastion_public_ip_id
+  
+  admin_ssh_public_key  = var.admin_ssh_public_key
+  
+  tags = var.tags
+}
+

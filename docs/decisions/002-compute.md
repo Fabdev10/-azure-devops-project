@@ -1,0 +1,15 @@
+# ADR 002: Architettura Compute (Bastion VM)
+
+## Contesto
+Nella Fase 2, avevamo bisogno di una risorsa di calcolo base (Bastion/Jump-box) situata all'interno della Virtual Network per amministrare in sicurezza i cluster (Fase 6) e validare il comportamento della rete, limitando al massimo la superficie d'attacco.
+
+## Decisione
+- **Sistema Operativo**: È stata scelta un'immagine `Ubuntu 22.04 LTS` fornita da Canonical. È lo standard di mercato, perfettamente supportata in Azure, e compatibile con tutti i tool cloud-native.
+- **SKU della Macchina Virtuale**: Per l'ambiente di sviluppo (`dev`), abbiamo optato per `Standard_B1s`. Si tratta di un'istanza "Burstable" estremamente economica, sufficiente per fare da jump-box o per lanciare container di test a basso consumo.
+- **Autenticazione SSH**: Disabilitato completamente l'accesso tramite password, l'unico metodo supportato è l'accesso con chiave pubblica SSH. La chiave viene passata dinamicamente tramite le variabili Terraform.
+- **Identità (Managed Identity)**: Abbiamo abilitato un'identità assegnata dal sistema (`SystemAssigned`). Questo permetterà alla VM in futuro di accedere alle risorse di Azure (es. Azure Key Vault o Azure Storage) senza dover gestire e iniettare staticamente credenziali e secret.
+- **Estensione Custom Script**: La VM esegue al boot uno script minimo che installa e abilita il demone Docker, aggiungendo l'utente di base al gruppo `docker`. In questo modo la macchina è già pronta per ospitare test veloci con container non appena viene provisionata.
+
+## Conseguenze (Trade-off)
+- **Prestazioni vs Costo**: La B1s ha performance di CPU e I/O di rete molto limitate. Se in futuro la VM verrà usata per eseguire carichi pesanti (es. un build server), lo SKU dovrà essere innalzato.
+- **Tempi di provisioning**: La presenza dell'estensione "CustomScript" aggiunge 1-2 minuti al tempo di esecuzione di `terraform apply`. In scenari di produzione più complessi, si dovrebbe optare per strumenti come Packer per creare immagini "Golden" pre-configurate, ma per ora il Custom Script è un ottimo compromesso tra semplicità ed efficienza per un ambiente di dev.
