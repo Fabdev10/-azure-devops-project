@@ -42,7 +42,7 @@ variable "admin_ssh_public_key" {
 variable "vm_size" {
   type        = string
   description = "Size of the Virtual Machine"
-  default     = "Standard_B1s"
+  default     = "Standard_F2ads_v7"
 }
 
 variable "tags" {

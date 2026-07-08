@@ -11,5 +11,10 @@ Nella Fase 2, avevamo bisogno di una risorsa di calcolo base (Bastion/Jump-box) 
 - **Estensione Custom Script**: La VM esegue al boot uno script minimo che installa e abilita il demone Docker, aggiungendo l'utente di base al gruppo `docker`. In questo modo la macchina è già pronta per ospitare test veloci con container non appena viene provisionata.
 
 ## Conseguenze (Trade-off)
-- **Prestazioni vs Costo**: La B1s ha performance di CPU e I/O di rete molto limitate. Se in futuro la VM verrà usata per eseguire carichi pesanti (es. un build server), lo SKU dovrà essere innalzato.
+- **Prestazioni vs Costo**: La F2ads_v7 è una soluzione di compromesso a causa della mancanza della serie B, e i costi potrebbero essere leggermente superiori al previsto.
 - **Tempi di provisioning**: La presenza dell'estensione "CustomScript" aggiunge 1-2 minuti al tempo di esecuzione di `terraform apply`. In scenari di produzione più complessi, si dovrebbe optare per strumenti come Packer per creare immagini "Golden" pre-configurate, ma per ora il Custom Script è un ottimo compromesso tra semplicità ed efficienza per un ambiente di dev.
+
+## Problemi incontrati e risoluzioni
+- **SKU VM**: La region `Italy North` non dispone della serie B (inizialmente avevamo scelto `Standard_B1s`). Abbiamo quindi dovuto optare per `Standard_F2ads_v7` che era disponibile.
+- **Generazione Immagine (Gen2)**: La VM della serie v7 richiede obbligatoriamente un'immagine Gen2. Abbiamo modificato l'SKU dell'immagine Ubuntu aggiungendo il suffisso `-gen2` (`22_04-lts-gen2`).
+- **Indirizzo IP Dinamico (NSG)**: La regola Network Security Group per autorizzare l'accesso SSH è ristretta al nostro IP. Poiché spesso le connessioni domestiche hanno IP dinamico, occorre ricordarsi di aggiornare la variabile Terraform qualora l'IP dovesse cambiare, per evitare timeout della connessione.
