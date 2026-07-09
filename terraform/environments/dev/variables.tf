@@ -39,6 +39,36 @@ variable "admin_ssh_public_key" {
 }
 
 variable "tags" {
+  description = "Tag comuni per le risorse"
   type        = map(string)
-  description = "Common tags"
+  default     = {}
+}
+
+variable "db_admin_login" {
+  description = "Login dell'amministratore del database"
+  type        = string
+}
+
+variable "db_admin_password" {
+  description = "Password dell'amministratore del database"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_version" {
+  description = "Versione di PostgreSQL"
+  type        = string
+  default     = "16"
+}
+
+variable "db_sku_name" {
+  description = "SKU del database"
+  type        = string
+  default     = "B_Standard_B1ms"
+}
+
+variable "db_storage_mb" {
+  description = "Storage in MB per il database"
+  type        = number
+  default     = 32768
 }

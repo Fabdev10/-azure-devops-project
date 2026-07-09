@@ -36,6 +36,14 @@ resource "azurerm_subnet" "data" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.data_subnet_prefix]
+
+  delegation {
+    name = "fs"
+    service_delegation {
+      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+    }
+  }
 }
 
 resource "azurerm_network_security_group" "compute_nsg" {
@@ -52,7 +60,7 @@ resource "azurerm_network_security_group" "compute_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefixes    = length(var.allowed_ssh_ips) > 0 ? var.allowed_ssh_ips : ["0.0.0.0/0"]
+    source_address_prefixes    = var.allowed_ssh_ips
     destination_address_prefix = "*"
   }
 
@@ -91,6 +99,18 @@ resource "azurerm_network_security_group" "data_nsg" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   tags                = local.common_tags
+
+  security_rule {
+    name                       = "AllowPostgresFromCompute"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "5432"
+    source_address_prefix      = var.compute_subnet_prefix
+    destination_address_prefix = "*"
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "data_nsg_assoc" {
