@@ -14,3 +14,9 @@ admin_ssh_public_key  = "ssh-rsa ..."
 tags = {
   Owner = "DevOpsTeam"
 }
+
+db_admin_login    = "psqladmin"
+db_admin_password = "<INSERISCI_LA_TUA_PASSWORD_QUI>" # Da non versionare mai
+db_version        = "16"
+db_sku_name       = "B_Standard_B1ms"
+db_storage_mb     = 32768

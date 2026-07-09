@@ -30,8 +30,12 @@ variable "data_subnet_prefix" {
 
 variable "allowed_ssh_ips" {
   type        = list(string)
-  description = "List of IP addresses allowed to connect via SSH"
-  default     = []
+  description = "Lista di IP CIDR autorizzati per SSH"
+
+  validation {
+    condition     = length(var.allowed_ssh_ips) > 0
+    error_message = "allowed_ssh_ips non può essere vuota: specifica almeno un IP/CIDR autorizzato."
+  }
 }
 
 variable "tags" {

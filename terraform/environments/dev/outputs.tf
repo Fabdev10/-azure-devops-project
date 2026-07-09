@@ -14,6 +14,16 @@ output "data_subnet_id" {
   value = module.networking.data_subnet_id
 }
 
+output "compute_ssh_command" {
+  description = "Comando per connettersi via SSH alla VM bastion"
+  value       = "ssh ${var.admin_ssh_public_key != "" ? "azureuser" : "azureuser"}@${module.networking.bastion_public_ip_address}"
+}
+
+output "database_fqdn" {
+  description = "Il FQDN (Fully Qualified Domain Name) del PostgreSQL Flexible Server"
+  value       = module.database.server_fqdn
+}
+
 output "compute_nsg_id" {
   value = module.networking.compute_nsg_id
 }

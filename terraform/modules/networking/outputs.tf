@@ -37,3 +37,8 @@ output "bastion_public_ip_id" {
   description = "ID dell'IP pubblico riservato per la VM bastion"
   value       = azurerm_public_ip.bastion_pip.id
 }
+
+output "bastion_public_ip_address" {
+  description = "Indirizzo IP pubblico della VM bastion"
+  value       = azurerm_public_ip.bastion_pip.ip_address
+}
