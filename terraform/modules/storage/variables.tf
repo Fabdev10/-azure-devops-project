@@ -33,6 +33,11 @@ variable "managed_identity_principal_id" {
   description = "Principal ID della Managed Identity della VM Bastion, a cui verrà assegnato il ruolo Storage Blob Data Contributor"
 }
 
+variable "compute_subnet_id" {
+  type        = string
+  description = "ID della subnet compute, autorizzata ad accedere allo storage account via Service Endpoint"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tag comuni da applicare a tutte le risorse del modulo"

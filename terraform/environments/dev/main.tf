@@ -55,6 +55,7 @@ module "storage" {
 
   allowed_storage_ips           = var.allowed_storage_ips
   managed_identity_principal_id = module.compute.managed_identity_principal_id
+  compute_subnet_id             = module.networking.compute_subnet_id
 
   tags = var.tags
 }

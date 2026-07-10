@@ -32,9 +32,10 @@ resource "azurerm_storage_account" "main" {
   }
 
   network_rules {
-    default_action = "Deny"
-    ip_rules       = var.allowed_storage_ips
-    bypass         = ["AzureServices"]
+    default_action             = "Deny"
+    ip_rules                   = var.allowed_storage_ips
+    virtual_network_subnet_ids = [var.compute_subnet_id]
+    bypass                     = ["AzureServices"]
   }
 
   tags = local.common_tags
