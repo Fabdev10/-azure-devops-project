@@ -21,7 +21,11 @@ variable "resource_group_name" {
 variable "allowed_storage_ips" {
   type        = list(string)
   description = "Lista di IP pubblici autorizzati ad accedere allo storage account (CIDR o indirizzi singoli)"
-  default     = []
+
+  validation {
+    condition     = length(var.allowed_storage_ips) > 0
+    error_message = "allowed_storage_ips non può essere vuota: specifica almeno un IP/CIDR autorizzato."
+  }
 }
 
 variable "managed_identity_principal_id" {
