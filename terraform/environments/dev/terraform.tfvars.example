@@ -20,3 +20,6 @@ db_admin_password = "<INSERISCI_LA_TUA_PASSWORD_QUI>" # Da non versionare mai
 db_version        = "16"
 db_sku_name       = "B_Standard_B1ms"
 db_storage_mb     = 32768
+
+# IP autorizzati ad accedere allo Storage Account (stessa lista di allowed_ssh_ips)
+allowed_storage_ips = ["<IL_TUO_IP_PUBBLICO>"]

@@ -43,3 +43,23 @@ output "bastion_vm_private_ip" {
 output "managed_identity_principal_id" {
   value = module.compute.managed_identity_principal_id
 }
+
+output "storage_account_name" {
+  description = "Nome dello Storage Account creato nella Fase 4"
+  value       = module.storage.storage_account_name
+}
+
+output "storage_account_id" {
+  description = "ID ARM dello Storage Account"
+  value       = module.storage.storage_account_id
+}
+
+output "uploads_container_name" {
+  description = "Nome del container 'uploads'"
+  value       = module.storage.uploads_container_name
+}
+
+output "backups_container_name" {
+  description = "Nome del container 'backups'"
+  value       = module.storage.backups_container_name
+}
