@@ -36,6 +36,7 @@ resource "azurerm_subnet" "data" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.data_subnet_prefix]
+  service_endpoints    = ["Microsoft.Storage"]
 
   delegation {
     name = "fs"

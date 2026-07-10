@@ -24,6 +24,7 @@ resource "azurerm_postgresql_flexible_server" "postgres" {
   storage_mb                    = var.storage_mb
   sku_name                      = var.sku_name
   public_network_access_enabled = false
+  zone                          = "1"
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.postgres_vnet_link]
 
