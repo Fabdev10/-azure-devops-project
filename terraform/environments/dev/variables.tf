@@ -72,3 +72,9 @@ variable "db_storage_mb" {
   type        = number
   default     = 32768
 }
+
+variable "allowed_storage_ips" {
+  type        = list(string)
+  description = "Lista di IP pubblici autorizzati ad accedere allo Storage Account"
+  default     = []
+}

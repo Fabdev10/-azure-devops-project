@@ -44,3 +44,18 @@ module "database" {
 
   tags = var.tags
 }
+
+module "storage" {
+  source = "../../modules/storage"
+
+  project             = var.project
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = module.networking.resource_group_name
+
+  allowed_storage_ips           = var.allowed_storage_ips
+  managed_identity_principal_id = module.compute.managed_identity_principal_id
+  compute_subnet_id             = module.networking.compute_subnet_id
+
+  tags = var.tags
+}
