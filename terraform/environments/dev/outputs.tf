@@ -63,3 +63,31 @@ output "backups_container_name" {
   description = "Nome del container 'backups'"
   value       = module.storage.backups_container_name
 }
+
+# ---------------------------------------------------------------------------
+# IAM Outputs
+# ---------------------------------------------------------------------------
+output "iam_custom_role_id" {
+  description = "L'ID della Custom Role creata"
+  value       = module.iam.custom_role_id
+}
+
+output "iam_custom_role_name" {
+  description = "Il nome della Custom Role creata"
+  value       = module.iam.custom_role_name
+}
+
+output "iam_application_client_id" {
+  description = "Il Client ID dell'Azure AD Application"
+  value       = module.iam.application_client_id
+}
+
+output "iam_service_principal_client_id" {
+  description = "Il Client ID del Service Principal"
+  value       = module.iam.service_principal_client_id
+}
+
+output "iam_service_principal_object_id" {
+  description = "L'Object ID del Service Principal"
+  value       = module.iam.service_principal_object_id
+}

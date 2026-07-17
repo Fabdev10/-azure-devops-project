@@ -28,10 +28,7 @@ variable "allowed_storage_ips" {
   }
 }
 
-variable "managed_identity_principal_id" {
-  type        = string
-  description = "Principal ID della Managed Identity della VM Bastion, a cui verrà assegnato il ruolo Storage Blob Data Contributor"
-}
+
 
 variable "compute_subnet_id" {
   type        = string

@@ -86,11 +86,3 @@ resource "azurerm_storage_management_policy" "main" {
   }
 }
 
-# ---------------------------------------------------------------------------
-# Role Assignment: Storage Blob Data Contributor → Managed Identity della VM
-# ---------------------------------------------------------------------------
-resource "azurerm_role_assignment" "vm_storage_blob_contributor" {
-  scope                = azurerm_storage_account.main.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = var.managed_identity_principal_id
-}
