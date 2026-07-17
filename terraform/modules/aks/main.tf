@@ -75,28 +75,31 @@ resource "azurerm_kubernetes_cluster" "aks" {
 # - mode User → workload applicativi; il pool system resta riservato a
 #   componenti Kubernetes di sistema (coredns, kube-proxy…)
 # ---------------------------------------------------------------------------
-resource "azurerm_kubernetes_cluster_node_pool" "user" {
-  name                  = "user"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_D2as_v7"
-  vnet_subnet_id        = var.subnet_id
-  mode                  = "User"
-
-  # Autoscaling: min 1, max 2 nodi
-  enable_auto_scaling = true
-  min_count           = 1
-  max_count           = 2
-  node_count          = 1
-
-  os_disk_size_gb = 64
-  os_disk_type    = "Managed"
-
-  tags = local.common_tags
-
-  lifecycle {
-    ignore_changes = [node_count]
-  }
-}
+# Node pool "user" rimosso temporaneamente: quota vCPU regionale esaurita
+# su questa subscription (Free Trial) in italynorth. Da reintrodurre se si
+# richiede un aumento di quota, o su una subscription diversa.
+#resource "azurerm_kubernetes_cluster_node_pool" "user" {
+#  name                  = "user"
+#  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+#  vm_size               = "Standard_D2as_v7"
+#  vnet_subnet_id        = var.subnet_id
+#  mode                  = "User"
+#
+#  # Autoscaling: min 1, max 2 nodi
+#  enable_auto_scaling = true
+#  min_count           = 1
+#  max_count           = 2
+#  node_count          = 1
+#
+#  os_disk_size_gb = 64
+#  os_disk_type    = "Managed"
+#
+#  tags = local.common_tags
+#
+#  lifecycle {
+#    ignore_changes = [node_count]
+#  }
+#}
 
 # ---------------------------------------------------------------------------
 # Role Assignment: AcrPull sulla kubelet identity
@@ -108,4 +111,12 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
   scope                = var.acr_id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+}
+
+# Role Assignment: consente alla Managed Identity della VM bastion di agire
+# come utente del cluster AKS (utile per kubectl o integrazioni lato bastion).
+resource "azurerm_role_assignment" "bastion_aks_user_role" {
+  scope                = azurerm_kubernetes_cluster.aks.id
+  role_definition_name = "Azure Kubernetes Service Cluster User Role"
+  principal_id         = var.managed_identity_principal_id
 }

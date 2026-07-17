@@ -99,6 +99,8 @@ module "aks" {
   subnet_id           = module.networking.aks_subnet_id
   acr_id              = module.acr.acr_id
 
+  managed_identity_principal_id = module.compute.managed_identity_principal_id
+
   tags = var.tags
 
   # Attende che tutte le risorse networking siano pronte (subnet AKS, NSG,

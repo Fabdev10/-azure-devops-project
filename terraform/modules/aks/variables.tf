@@ -33,3 +33,8 @@ variable "tags" {
   description = "Tags da applicare alle risorse"
   default     = {}
 }
+
+variable "managed_identity_principal_id" {
+  type        = string
+  description = "Object ID / principal ID della Managed Identity della VM bastion che deve poter accedere al cluster AKS"
+}
