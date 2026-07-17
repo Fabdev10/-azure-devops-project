@@ -100,4 +100,8 @@ module "aks" {
   acr_id              = module.acr.acr_id
 
   tags = var.tags
+
+  # Attende che tutte le risorse networking siano pronte (subnet AKS, NSG,
+  # associazione NAT Gateway) prima di avviare la creazione del cluster.
+  depends_on = [module.networking]
 }
