@@ -28,6 +28,12 @@ variable "data_subnet_prefix" {
   description = "Address prefix for the data/private endpoint subnet"
 }
 
+variable "aks_subnet_prefix" {
+  type        = string
+  description = "Address prefix per la subnet dedicata ai nodi AKS"
+  default     = "10.0.3.0/24"
+}
+
 variable "allowed_ssh_ips" {
   type        = list(string)
   description = "Lista di IP CIDR autorizzati per SSH"
