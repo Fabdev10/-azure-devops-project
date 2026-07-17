@@ -35,7 +35,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name           = "system"
-    vm_size        = "Standard_D2as_v5"
+    vm_size        = "Standard_D2as_v7"
     vnet_subnet_id = var.subnet_id
 
     # Autoscaling: min 1, max 3 nodi
@@ -75,7 +75,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 resource "azurerm_kubernetes_cluster_node_pool" "user" {
   name                  = "user"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_D2as_v5"
+  vm_size               = "Standard_D2as_v7"
   vnet_subnet_id        = var.subnet_id
   mode                  = "User"
 
