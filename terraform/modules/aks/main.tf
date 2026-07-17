@@ -54,8 +54,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_plugin      = "azure"
     network_plugin_mode = "overlay"
     network_policy      = "azure"
-    load_balancer_sku   = "standard"
-    outbound_type       = "userAssignedNATGateway"
+
+    service_cidr   = "172.16.0.0/16"
+    dns_service_ip = "172.16.0.10"
   }
 
   tags = local.common_tags
