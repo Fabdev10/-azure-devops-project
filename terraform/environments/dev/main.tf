@@ -7,6 +7,7 @@ module "networking" {
   vnet_address_space    = var.vnet_address_space
   compute_subnet_prefix = var.compute_subnet_prefix
   data_subnet_prefix    = var.data_subnet_prefix
+  aks_subnet_prefix     = var.aks_subnet_prefix
   allowed_ssh_ips       = var.allowed_ssh_ips
 
   tags = var.tags
@@ -53,8 +54,8 @@ module "storage" {
   location            = var.location
   resource_group_name = module.networking.resource_group_name
 
-  allowed_storage_ips           = var.allowed_storage_ips
-  compute_subnet_id             = module.networking.compute_subnet_id
+  allowed_storage_ips = var.allowed_storage_ips
+  compute_subnet_id   = module.networking.compute_subnet_id
 
   tags = var.tags
 }
@@ -69,4 +70,40 @@ module "iam" {
   managed_identity_principal_id = module.compute.managed_identity_principal_id
 
   tags = var.tags
+}
+
+# ---------------------------------------------------------------------------
+# Fase 6 – ACR
+# ---------------------------------------------------------------------------
+module "acr" {
+  source = "../../modules/acr"
+
+  project             = var.project
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = module.networking.resource_group_name
+
+  tags = var.tags
+}
+
+# ---------------------------------------------------------------------------
+# Fase 6 – AKS
+# ---------------------------------------------------------------------------
+module "aks" {
+  source = "../../modules/aks"
+
+  project             = var.project
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = module.networking.resource_group_name
+  subnet_id           = module.networking.aks_subnet_id
+  acr_id              = module.acr.acr_id
+
+  managed_identity_principal_id = module.compute.managed_identity_principal_id
+
+  tags = var.tags
+
+  # Attende che tutte le risorse networking siano pronte (subnet AKS, NSG,
+  # associazione NAT Gateway) prima di avviare la creazione del cluster.
+  depends_on = [module.networking]
 }

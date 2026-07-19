@@ -28,6 +28,12 @@ variable "data_subnet_prefix" {
   description = "Address prefix for the data/private endpoint subnet"
 }
 
+variable "aks_subnet_prefix" {
+  type        = string
+  description = "Address prefix per la subnet AKS (nodi del cluster)"
+  default     = "10.0.3.0/24"
+}
+
 variable "allowed_ssh_ips" {
   type        = list(string)
   description = "List of IP addresses allowed to connect via SSH"

@@ -91,3 +91,60 @@ output "iam_service_principal_object_id" {
   description = "L'Object ID del Service Principal"
   value       = module.iam.service_principal_object_id
 }
+
+# ---------------------------------------------------------------------------
+# Fase 6 – ACR Outputs
+# ---------------------------------------------------------------------------
+output "acr_login_server" {
+  description = "Login server dell'Azure Container Registry"
+  value       = module.acr.acr_login_server
+}
+
+output "acr_id" {
+  description = "ID ARM dell'Azure Container Registry"
+  value       = module.acr.acr_id
+}
+
+# ---------------------------------------------------------------------------
+# Fase 6 – AKS Outputs
+# ---------------------------------------------------------------------------
+output "aks_cluster_name" {
+  description = "Nome del cluster AKS"
+  value       = module.aks.cluster_name
+}
+
+output "aks_cluster_id" {
+  description = "ID ARM del cluster AKS"
+  value       = module.aks.cluster_id
+}
+
+output "aks_oidc_issuer_url" {
+  description = "URL OIDC issuer del cluster AKS — necessario per Workload Identity"
+  value       = module.aks.oidc_issuer_url
+}
+
+output "aks_kubelet_identity_object_id" {
+  description = "Object ID della kubelet managed identity"
+  value       = module.aks.kubelet_identity_object_id
+}
+
+output "aks_cluster_fqdn" {
+  description = "FQDN privato dell'API server AKS"
+  value       = module.aks.cluster_fqdn
+}
+
+output "aks_kube_config_raw" {
+  description = "Kubeconfig grezzo del cluster AKS (sensitive)"
+  value       = module.aks.kube_config_raw
+  sensitive   = true
+}
+
+output "networking_aks_subnet_id" {
+  description = "ID della subnet AKS"
+  value       = module.networking.aks_subnet_id
+}
+
+output "networking_nat_gateway_public_ip" {
+  description = "IP pubblico del NAT Gateway usato dai nodi AKS"
+  value       = module.networking.nat_gateway_public_ip
+}
